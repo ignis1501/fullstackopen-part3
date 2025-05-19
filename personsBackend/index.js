@@ -10,6 +10,9 @@ app.use(morgan(':method :url :status :response-time ms - :body'))
 
 app.use(express.json())
 
+const cors = require('cors')
+app.use(cors())
+
 let persons = [
     { 
       "id": 1,
