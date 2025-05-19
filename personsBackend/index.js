@@ -2,8 +2,11 @@ const express = require('express');
 const app = express();
 
 const morgan = require('morgan')
-//morgan('tiny')
-app.use(morgan('tiny'))
+const bodyParser = require('body-parser')
+
+morgan.token('body', (request, response) => JSON.stringify(request.body));
+app.use(bodyParser.json())
+app.use(morgan(':method :url :status :response-time ms - :body'))
 
 app.use(express.json())
 
