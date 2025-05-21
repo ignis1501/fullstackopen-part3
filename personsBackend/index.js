@@ -41,7 +41,10 @@ app.use(express.static('dist'))
 //]
 
 app.get('/api/persons', (request, response) => {
-    Person.find({}).then(person =>{
+    //console.log('Entra /api/persons');
+    Person.find({}).then(person => {  
+        //console.log(persona);
+              
         response.json(person);
     })
     

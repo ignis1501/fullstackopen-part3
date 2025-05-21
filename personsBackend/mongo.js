@@ -8,19 +8,19 @@ if(process.argv.length < 3) {
     
 }
 
-const personaSchema = new mongoose.Schema({
+const personSchema = new mongoose.Schema({
     name: String,
     number: String,
 })
 
-const Persona = mongoose.model('Persona', personaSchema)
+const Person = mongoose.model('Person', personSchema)
 
 const obtenirPersones = () => {
     
-    Persona.find({}).then(result => {
+    Person.find({}).then(result => {
         console.log('phonebook:')
-        result.forEach(persona => {
-            console.log(persona.name, persona.number)            
+        result.forEach(person => {
+            console.log(person.name, person.number)            
             
         })
         mongoose.connection.close()
@@ -30,12 +30,12 @@ const obtenirPersones = () => {
 
 const insertarPersona = () => {
     
-    const persona = new Persona({
+    const person = new Person({
         name: process.argv[3],
         number: process.argv[4],
     })
 
-    persona.save().then(result => {
+    person.save().then(result => {
         console.log(`added ${process.argv[3]} number ${process.argv[4]} to phonebook`)
         mongoose.connection.close()
         
