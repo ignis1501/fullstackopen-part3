@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "build:ui": "rm -rf dist && cd ../personsFront/ && npm run build && cp -r dist ../personsBackend"
+    "build:ui": "rm -rf dist && cd ../personsFront/ && npm run build && cp -r dist ../personsBackend",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push https://github.com/ignis1501/fullstackopen-part3 master"
   },
   "dependencies": {
     "axios": "^1.9.0",
