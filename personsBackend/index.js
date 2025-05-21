@@ -103,7 +103,26 @@ app.post('/api/persons', (request, response) => {
         })
     }
 
-    if(personExist(body.name)) {
+    Person.find({name: body.name}).then(person => {  
+        //console.log(persona);
+        if(person) {
+            return response.status(400).json({
+            error: 'name must be unique'
+            })
+        } else {
+            const person = new Person({
+            name: body.name,
+            number: body.number,
+            })
+    
+            person.save().then(result => {
+            console.log(`added ${body.name} number ${body.number} to phonebook`)
+            mongoose.connection.close()            
+            })
+        }
+    })
+
+    /* if(personExist(body.name)) {
         return response.status(400).json({
             error: 'name must be unique'
         })
@@ -117,7 +136,7 @@ app.post('/api/persons', (request, response) => {
         //persons = persons.concat(person)
         console.log(person)        
         response.json(person)
-    }
+    } */
 })
 
 const PORT = process.env.PORT || 3001;

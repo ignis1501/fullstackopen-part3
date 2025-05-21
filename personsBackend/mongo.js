@@ -29,8 +29,26 @@ const obtenirPersones = () => {
 }
 
 const insertarPersona = () => {
+
+    Person.find({name: process.argv[3]}).then(person => { 
+            //console.log(persona);
+        if(person) {
+            console.log('name must be unique')
+        } else {
+            const person = new Person({
+            name: process.argv[3],
+            number: process.argv[4],
+            })
     
-    const person = new Person({
+            person.save().then(result => {
+            console.log(`added ${process.argv[3]} number ${process.argv[4]} to phonebook`)
+            //mongoose.connection.close()            
+            })
+        }
+        mongoose.connection.close()  
+    })
+    
+    /* const person = new Person({
         name: process.argv[3],
         number: process.argv[4],
     })
@@ -39,7 +57,7 @@ const insertarPersona = () => {
         console.log(`added ${process.argv[3]} number ${process.argv[4]} to phonebook`)
         mongoose.connection.close()
         
-    })
+    }) */
 }
 
 const mongooseConection = () => {
