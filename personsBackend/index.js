@@ -17,7 +17,7 @@ app.use(cors())
 
 app.use(express.static('dist'))
 
-let persons = [
+//let persons = [
    /*  { 
       "id": 1,
       "name": "Arto Hellas", 
@@ -38,11 +38,11 @@ let persons = [
       "name": "Mary Poppendieck", 
       "number": "39-23-6423122"
     } */
-]
+//]
 
 app.get('/api/persons', (request, response) => {
     Person.find({}).then(person =>{
-        response.json(persons);
+        response.json(person);
     })
     
 })
@@ -57,7 +57,10 @@ app.get('/api/persons/:id', (request, response) => {
     const person = persons.find(person => person.id === id)
 
     if(person) {
-        response.json(person)
+        Person.findById(request.params.id).then(person => {
+            response.json(person)
+        })
+        
     } else {
         response.statusMessage = "Person missing"
         response.status(404).end()
