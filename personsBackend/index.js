@@ -41,10 +41,7 @@ app.use(express.static('dist'))
 //]
 
 app.get('/api/persons', (request, response) => {
-    //console.log('Entra /api/persons');
-    Person.find({}).then(person => {  
-        //console.log(persona);
-              
+    Person.find({}).then(person => {                
         response.json(person);
     })
     
@@ -70,11 +67,20 @@ app.get('/api/persons/:id', (request, response) => {
     }
 })
 
-app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    persons = persons.filter(person => person.id !== id)
+app.delete('/api/persons/:id', (request, response, next) => {
+    console.log(request.params.id);
+    
+    Person.findByIdAndDelete(request.params.id)
+        .then(result => {
+            console.log(result);
+            result
+            ? console.log('Eliminated person')
+            : console.log('Person not found')
+            
+            response.status(204).end()
+        })
+        .catch(error => next(error))
 
-    response.status(204).end()
 })
 
 const generateId = () => {
@@ -104,7 +110,6 @@ app.post('/api/persons', (request, response) => {
     }
 
     Person.find({name: body.name}).then(person => {  
-        //console.log(persona);
         if(person.length > 0) {
             return response.status(400).json({
             error: 'name must be unique'
@@ -120,23 +125,20 @@ app.post('/api/persons', (request, response) => {
             })
         }
     })
-
-    /* if(personExist(body.name)) {
-        return response.status(400).json({
-            error: 'name must be unique'
-        })
-    } else {
-        const person = {
-            name: body.name, 
-            number: body.number,
-            id: generateId(),
-        }
-
-        //persons = persons.concat(person)
-        console.log(person)        
-        response.json(person)
-    } */
 })
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  if(error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  }
+
+  next(error)
+  
+}
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
