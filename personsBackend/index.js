@@ -47,13 +47,27 @@ app.get('/api/persons', (request, response) => {
     
 })
 
-app.get('/info', (request, response) => {
-    let date = new Date();
-    response.send(`<p>Phonebook has info for ${persons.length} people</p><p>${date}</p>`)
+app.get('/info', (request, response, next) => {
+    Person.find({})
+        .then(person => {                
+        let date = new Date();
+        response.send(`<p>Phonebook has info for ${person.length} people</p><p>${date}</p>`)
+    })
+    .catch(error => next(error))
+    
 })
 
-app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
+app.get('/api/persons/:id', (request, response, next) => {
+    Person.findById(request.params.id)
+        .then(person => {
+            if(person) {
+                response.json(person)
+            } else {
+                response.status(404).end()
+            }
+        })
+        .catch(error => next(error))
+    /* const id = Number(request.params.id)
     const person = persons.find(person => person.id === id)
 
     if(person) {
@@ -64,7 +78,7 @@ app.get('/api/persons/:id', (request, response) => {
     } else {
         response.statusMessage = "Person missing"
         response.status(404).end()
-    }
+    } */
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
