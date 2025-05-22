@@ -109,22 +109,38 @@ app.post('/api/persons', (request, response) => {
         })
     }
 
+    const person = new Person({
+        name: body.name,
+        number: body.number,
+    })
+
     Person.find({name: body.name}).then(person => {  
         if(person.length > 0) {
             return response.status(400).json({
             error: 'name must be unique'
             })
-        } else {
-            const person = new Person({
-            name: body.name,
-            number: body.number,
-            })
+        } else {            
     
             person.save().then(result => {
             console.log(`added ${body.name} number ${body.number} to phonebook`)
             })
         }
     })
+})
+
+app.put('/api/persons/:id', (request, response, next) => {
+    const body = request.body
+
+    const person = {
+        name: body.name,
+        number: body.number,
+    }
+
+    Person.findByIdAndUpdate(request.params.id, person, { new: true})
+        .then(updatedPerson => {
+            response.json(updatedPerson)
+        })
+        .catch(error => next(error))
 })
 
 const errorHandler = (error, request, response, next) => {
