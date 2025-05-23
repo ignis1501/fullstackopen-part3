@@ -18,43 +18,43 @@ app.use(cors())
 app.use(express.static('dist'))
 
 //let persons = [
-   /*  { 
+   /*  {
       "id": 1,
-      "name": "Arto Hellas", 
+      "name": "Arto Hellas",
       "number": "040-123456"
     },
-    { 
+    {
       "id": 2,
-      "name": "Ada Lovelace", 
+      "name": "Ada Lovelace",
       "number": "39-44-5323523"
     },
-    { 
+    {
       "id": 3,
-      "name": "Dan Abramov", 
+      "name": "Dan Abramov",
       "number": "12-43-234345"
     },
-    { 
+    {
       "id": 4,
-      "name": "Mary Poppendieck", 
+      "name": "Mary Poppendieck",
       "number": "39-23-6423122"
     } */
 //]
 
 app.get('/api/persons', (request, response) => {
-    Person.find({}).then(person => {                
+    Person.find({}).then(person => {
         response.json(person);
     })
-    
+
 })
 
 app.get('/info', (request, response, next) => {
     Person.find({})
-        .then(person => {                
+        .then(person => {
         let date = new Date();
         response.send(`<p>Phonebook has info for ${person.length} people</p><p>${date}</p>`)
     })
     .catch(error => next(error))
-    
+
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -74,7 +74,7 @@ app.get('/api/persons/:id', (request, response, next) => {
         Person.findById(request.params.id).then(person => {
             response.json(person)
         })
-        
+
     } else {
         response.statusMessage = "Person missing"
         response.status(404).end()
@@ -83,14 +83,14 @@ app.get('/api/persons/:id', (request, response, next) => {
 
 app.delete('/api/persons/:id', (request, response, next) => {
     console.log(request.params.id);
-    
+
     Person.findByIdAndDelete(request.params.id)
         .then(result => {
             console.log(result);
             result
             ? console.log('Eliminated person')
             : console.log('Person not found')
-            
+
             response.status(204).end()
         })
         .catch(error => next(error))
@@ -101,7 +101,7 @@ app.post('/api/persons', (request, response, next) => {
     const body = request.body
 
     console.log(body);
-    
+
 
     if(!body.name || !body.number) {
         return response.status(400).json({
@@ -114,13 +114,13 @@ app.post('/api/persons', (request, response, next) => {
         number: body.number,
     })
 
-    Person.find({name: body.name}).then(p => {  
+    Person.find({ name: body.name }).then(p => {
         if(p.length > 0) {
             return response.status(400).json({
             error: 'name must be unique'
             })
-        } else {            
-    
+        } else {
+
             person.save().then(result => {
             console.log(`added ${body.name} number ${body.number} to phonebook`)
             response.json(result)
@@ -155,7 +155,7 @@ const errorHandler = (error, request, response, next) => {
   }
 
   next(error)
-  
+
 }
 
 app.use(errorHandler)
