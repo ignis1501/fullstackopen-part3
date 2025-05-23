@@ -9,7 +9,10 @@ if(process.argv.length < 3) {
 }
 
 const personSchema = new mongoose.Schema({
-    name: String,
+    name: {
+            type: String,
+            minLength: [3, 'The value must have more than 3 characters, current value {VALUE}']
+        },
     number: String,
 })
 

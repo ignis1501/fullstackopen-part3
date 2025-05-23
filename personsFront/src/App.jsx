@@ -68,6 +68,9 @@ const App = () => {
               setPersons(initialPersons)
             })
         })
+        .catch(error => {
+          notification(error.response.data.error)
+        })
       
     } else {
       const actualPerson = persons.filter(persona => persona.name === newName);
