@@ -128,8 +128,8 @@ app.post('/api/persons', (request, response) => {
         number: body.number,
     })
 
-    Person.find({name: body.name}).then(person => {  
-        if(person.length > 0) {
+    Person.find({name: body.name}).then(p => {  
+        if(p.length > 0) {
             return response.status(400).json({
             error: 'name must be unique'
             })
