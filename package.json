@@ -6,7 +6,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "push": "git push https://github.com/ignis1501/fullstackopen-part3 master"
+    "push": "git push https://github.com/ignis1501/fullstackopen-part3 main"
   },
   "author": "Igna",
   "license": "ISC",
