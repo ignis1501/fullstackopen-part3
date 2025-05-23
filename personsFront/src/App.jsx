@@ -69,7 +69,8 @@ const App = () => {
             })
         })
         .catch(error => {
-          notification(error.response.data.error, true)
+          setError(true)
+          notification(error.response.data.error)
         })
       
     } else {
