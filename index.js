@@ -97,20 +97,6 @@ app.delete('/api/persons/:id', (request, response, next) => {
 
 })
 
-const generateId = () => {
-    return Math.floor(Math.random() * (10000 - 1) + 1)
-}
-
-const personExist = (name) => {
-    let filtre = persons.filter(person => person.name === name)
-
-    if(filtre.length > 0) {
-        return true
-    } else {
-         return false
-        }
-}
-
 app.post('/api/persons', (request, response, next) => {
     const body = request.body
 
