@@ -137,6 +137,7 @@ app.post('/api/persons', (request, response, next) => {
     
             person.save().then(result => {
             console.log(`added ${body.name} number ${body.number} to phonebook`)
+            response.json(result)
             })
             .catch(error => next(error))
         }

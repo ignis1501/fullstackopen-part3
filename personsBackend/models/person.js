@@ -22,7 +22,15 @@ mongoose.connect(url)
             type: String,
             minLength: [3, 'The value must have more than 3 characters, current value {VALUE}']
         },
-        number: String,
+        number: {
+            type: String,
+            validate: {
+                validator: function(v) {
+                    return /\d{2,3}[-]\d*/.test(v);
+                },
+                message: 'Provided phone number is invalid.'
+            },
+        }
     })
 
     personSchema.set('toJSON', {

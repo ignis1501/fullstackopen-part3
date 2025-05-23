@@ -50,22 +50,28 @@ const App = () => {
     const personObject = {
       name: newName,
       number: newTel
-    }    
-    
+    }
+
     if(addPersonControl(newName)) {
       
       personsService
         .create(personObject)
         .then(returnedPerson => {
-          setPersons(persons.concat(personObject));
+          /* setPersons(persons.concat(personObject));
           setNewName('');
           setNewTel('');
           setError(false);
-          notification(`Added ${personObject.name}`)
+          notification(`Added ${personObject.name}`) */
           personsService
             .getAll()
             .then(initialPersons => {
               setPersons(initialPersons)
+              console.log('Entra a getAll Create');
+              
+              setNewName('');
+              setNewTel('');
+              setError(false);
+              notification(`Added ${personObject.name}`)
             })
         })
         .catch(error => {
